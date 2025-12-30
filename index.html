@@ -23,6 +23,18 @@ section { padding:50px 20px; max-width:900px; margin:auto; }
 .guarantee img { width:40px; margin-right:10px; }
 .customer-img { width:60px; height:60px; border-radius:50%; object-fit:cover; margin-right:10px; }
 .testimonial { display:flex; align-items:center; }
+
+/* Carrusel */
+.carousel-container { position: relative; max-width: 500px; margin: 20px auto; overflow: hidden; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.2);}
+.carousel-slide { display: none; width: 100%; transition: transform 0.5s ease-in-out;}
+.carousel-slide img { width: 100%; display: block; border-radius: 15px;}
+.prev, .next { position:absolute; top:50%; transform:translateY(-50%); background-color: rgba(255,76,76,0.8); color:white; border:none; padding:10px; border-radius:50%; cursor:pointer; font-size:18px; z-index:10; transition:0.3s;}
+.prev:hover, .next:hover { background-color: rgba(255,76,76,1);}
+.prev { left:15px; } .next { right:15px; }
+.carousel-dots { text-align:center; margin-top:10px;}
+.dot { height:12px; width:12px; margin:0 5px; display:inline-block; background-color:#bbb; border-radius:50%; cursor:pointer; transition:background-color 0.3s;}
+.dot.active { background-color:#FF4C4C;}
+@media (max-width:600px){ .carousel-container { max-width:90%; } .prev, .next { padding:8px; font-size:16px;} }
 </style>
 </head>
 <body>
@@ -34,6 +46,29 @@ section { padding:50px 20px; max-width:900px; margin:auto; }
     <div id="timer">Oferta termina en: 00:30:00</div><br>
     <a href="#checkout" class="btn">Comprar Ahora</a>
 </header>
+
+<!-- Carrusel de imágenes -->
+<section>
+  <h2 style="text-align:center;">Imágenes del Producto</h2>
+  <div class="carousel-container">
+    <div class="carousel-slide active">
+      <img src="imagen1.jpg" alt="Masajeador Ojos 1">
+    </div>
+    <div class="carousel-slide">
+      <img src="imagen2.jpg" alt="Masajeador Ojos 2">
+    </div>
+    <div class="carousel-slide">
+      <img src="imagen3.jpg" alt="Masajeador Ojos 3">
+    </div>
+    <button class="prev">&#10094;</button>
+    <button class="next">&#10095;</button>
+    <div class="carousel-dots">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+</section>
 
 <section>
     <h2>Beneficios que Sentirás Desde la Primera Sesión</h2>
@@ -74,7 +109,7 @@ section { padding:50px 20px; max-width:900px; margin:auto; }
 </section>
 
 <section id="checkout">
-    <h2>Compra Ahora y Recibe tu Masajeador en 8–15 Días</h2>
+    <h2>Compra Ahora y Recibe tu Masajeador Pronto</h2>
     <form action="https://checkout.stripe.com/pay/cs_test_YOUR_TEST_ID" method="POST">
         <label>Nombre:</label><br>
         <input type="text" name="name" required style="padding:10px; width:100%; margin-bottom:10px;"><br>
@@ -82,7 +117,7 @@ section { padding:50px 20px; max-width:900px; margin:auto; }
         <input type="email" name="email" required style="padding:10px; width:100%; margin-bottom:10px;"><br>
         <button type="submit" class="btn">Pagar con Stripe</button>
     </form>
-    <p>Entrega estimada: 8–15 días hábiles desde AliExpress</p>
+    <p>Entrega rápida: recibirás tu producto pronto</p>
 </section>
 
 <footer>
@@ -94,7 +129,7 @@ section { padding:50px 20px; max-width:900px; margin:auto; }
 </div>
 
 <script>
-// Animaciones fade-in al hacer scroll
+// Animaciones fade-in
 const features = document.querySelectorAll('.feature');
 const headerElements = document.querySelectorAll('header h1, header p');
 
@@ -107,39 +142,51 @@ window.addEventListener('scroll', () => {
         }
     });
 });
-
-// Animación header
 window.addEventListener('load', () => {
     headerElements.forEach(el => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; });
 });
 
-// Temporizador persistente usando localStorage
+// Temporizador persistente
 const TIMER_KEY = 'masajeador_timer';
 let countdown = localStorage.getItem(TIMER_KEY);
 if(!countdown) { countdown = 30*60; localStorage.setItem(TIMER_KEY, countdown); }
 const timerEl = document.getElementById('timer');
-
 setInterval(() => {
     countdown--;
-    if(countdown <=0){
-        timerEl.innerText = "¡Oferta finalizada!";
-        localStorage.removeItem(TIMER_KEY);
-        return;
-    }
+    if(countdown <=0){ timerEl.innerText = "¡Oferta finalizada!"; localStorage.removeItem(TIMER_KEY); return; }
     localStorage.setItem(TIMER_KEY, countdown);
     let minutes = Math.floor(countdown/60).toString().padStart(2,'0');
     let seconds = (countdown%60).toString().padStart(2,'0');
     timerEl.innerText = `Oferta termina en: 00:${minutes}:${seconds}`;
 }, 1000);
 
-// Stock dinámico con persistencia
+// Stock dinámico
 const STOCK_KEY = 'masajeador_stock';
 let stock = localStorage.getItem(STOCK_KEY);
 if(!stock){ stock=25; localStorage.setItem(STOCK_KEY, stock); }
 const stockEl = document.getElementById('stock');
 setInterval(() => {
     if(stock>1){ stock--; stockEl.innerText = stock; localStorage.setItem(STOCK_KEY, stock); }
-}, 90000); // cada 1.5 min
+}, 90000);
+
+// Carrusel
+let slideIndex = 0;
+const slides = document.querySelectorAll('.carousel-slide');
+const dots = document.querySelectorAll('.dot');
+
+function showSlide(index){
+  slides.forEach(s => s.style.display='none');
+  dots.forEach(d=>d.classList.remove('active'));
+  slides[index].style.display='block';
+  dots[index].classList.add('active');
+}
+function nextSlide(){ slideIndex = (slideIndex+1)%slides.length; showSlide(slideIndex); }
+function prevSlide(){ slideIndex = (slideIndex-1+slides.length)%slides.length; showSlide(slideIndex); }
+showSlide(slideIndex);
+document.querySelector('.next').addEventListener('click', nextSlide);
+document.querySelector('.prev').addEventListener('click', prevSlide);
+dots.forEach((dot,i)=>{ dot.addEventListener('click',()=>{ slideIndex=i; showSlide(slideIndex); }); });
+setInterval(nextSlide,5000);
 </script>
 
 </body>
