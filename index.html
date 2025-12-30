@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masajeador de Ojos Portátil – Oferta Ultra</title>
+<style>
+body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f7f7f7; overflow-x:hidden;}
+header { background:#4B9CE2; color:white; padding:50px 20px; text-align:center; position:relative; overflow:hidden;}
+header h1 { margin:0; font-size:2.8em; transform: translateY(-50px); opacity:0; transition:1s ease;}
+header p { margin:10px 0 20px; font-size:1.3em; transform: translateY(-50px); opacity:0; transition:1.2s ease;}
+.btn { background:#FF4C4C; color:white; padding:15px 25px; text-decoration:none; font-size:1.2em; border-radius:5px; display:inline-block; transition:0.3s; }
+.btn:hover { background:#e03b3b; }
+section { padding:50px 20px; max-width:900px; margin:auto; }
+.features, .faq { display:grid; gap:20px; }
+.feature, .faq-item { background:white; padding:20px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1); opacity:0; transform: translateY(50px); transition:0.8s ease;}
+.price { text-align:center; margin:30px 0; font-size:2em; font-weight:bold; color:#FF4C4C; }
+.fixed-cta { position:fixed; bottom:0; width:100%; background:#FF4C4C; color:white; text-align:center; padding:15px; font-size:1.2em; box-shadow:0 -4px 10px rgba(0,0,0,0.2); z-index:1000;}
+.fixed-cta a { color:white; text-decoration:none; font-weight:bold; }
+.offer { background:#FFEFD5; color:#FF4C4C; font-weight:bold; padding:10px 15px; border-radius:5px; display:inline-block; margin-bottom:15px; }
+#timer { font-weight:bold; font-size:1.3em; color:#FF4C4C; margin-top:10px;}
+.guarantee { display:flex; align-items:center; justify-content:center; background:#DFF0D8; color:#3C763D; padding:20px; border-radius:10px; margin:20px 0; font-weight:bold;}
+.guarantee img { width:40px; margin-right:10px; }
+.customer-img { width:60px; height:60px; border-radius:50%; object-fit:cover; margin-right:10px; }
+.testimonial { display:flex; align-items:center; }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Masajeador de Ojos Portátil</h1>
+    <p>Adiós a la fatiga ocular y dolores de cabeza – ¡pruébalo hoy!</p>
+    <div class="offer">Oferta limitada: <span id="stock">25</span> unidades disponibles!</div>
+    <div id="timer">Oferta termina en: 00:30:00</div><br>
+    <a href="#checkout" class="btn">Comprar Ahora</a>
+</header>
+
+<section>
+    <h2>Beneficios que Sentirás Desde la Primera Sesión</h2>
+    <div class="features">
+        <div class="feature">Relaja tus ojos y reduce la fatiga visual instantáneamente.</div>
+        <div class="feature">Alivia dolores de cabeza y tensión facial de manera natural.</div>
+        <div class="feature">Perfecto para casa, oficina o viajes gracias a su portabilidad.</div>
+        <div class="feature">Modos de vibración y calor para máxima relajación y bienestar.</div>
+    </div>
+</section>
+
+<section>
+    <h2>Características Clave</h2>
+    <div class="features">
+        <div class="feature">Material seguro y suave para la piel, totalmente hipoalergénico.</div>
+        <div class="feature">Batería recargable: hasta 2 horas continuas por carga.</div>
+        <div class="feature">Peso ligero: 180g | Dimensiones: 20x8x7 cm.</div>
+        <div class="feature">Incluye cable USB y manual de uso rápido.</div>
+    </div>
+</section>
+
+<section>
+    <h2>Opiniones de Nuestros Clientes</h2>
+    <div class="features">
+        <div class="feature testimonial"><img class="customer-img" src="https://i.pravatar.cc/60?img=1" alt="Ana"><span>“Desde que lo uso, mis ojos descansan mucho más y el dolor de cabeza desaparece.” – Ana R.</span></div>
+        <div class="feature testimonial"><img class="customer-img" src="https://i.pravatar.cc/60?img=2" alt="Javier"><span>“Excelente para trabajar frente al ordenador, muy recomendable.” – Javier M.</span></div>
+        <div class="feature testimonial"><img class="customer-img" src="https://i.pravatar.cc/60?img=3" alt="Lucía"><span>“Pequeño, potente y efectivo. Me encanta usarlo antes de dormir.” – Lucía F.</span></div>
+    </div>
+</section>
+
+<section class="guarantee">
+    <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Garantía">
+    Garantía de devolución 100% en 14 días si no estás satisfecho
+</section>
+
+<section class="price">
+    Precio Especial: 49,90€ (Envío incluido)
+</section>
+
+<section id="checkout">
+    <h2>Compra Ahora y Recibe tu Masajeador en 8–15 Días</h2>
+    <form action="https://checkout.stripe.com/pay/cs_test_YOUR_TEST_ID" method="POST">
+        <label>Nombre:</label><br>
+        <input type="text" name="name" required style="padding:10px; width:100%; margin-bottom:10px;"><br>
+        <label>Email:</label><br>
+        <input type="email" name="email" required style="padding:10px; width:100%; margin-bottom:10px;"><br>
+        <button type="submit" class="btn">Pagar con Stripe</button>
+    </form>
+    <p>Entrega estimada: 8–15 días hábiles desde AliExpress</p>
+</section>
+
+<footer>
+    &copy; 2025 Tu Tienda. Todos los derechos reservados. | Política de privacidad y devoluciones.
+</footer>
+
+<div class="fixed-cta">
+    <a href="#checkout">¡Comprar Ahora – Oferta Limitada!</a>
+</div>
+
+<script>
+// Animaciones fade-in al hacer scroll
+const features = document.querySelectorAll('.feature');
+const headerElements = document.querySelectorAll('header h1, header p');
+
+window.addEventListener('scroll', () => {
+    features.forEach(f => {
+        const rect = f.getBoundingClientRect();
+        if(rect.top < window.innerHeight - 50){
+            f.style.opacity = '1';
+            f.style.transform = 'translateY(0)';
+        }
+    });
+});
+
+// Animación header
+window.addEventListener('load', () => {
+    headerElements.forEach(el => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; });
+});
+
+// Temporizador persistente usando localStorage
+const TIMER_KEY = 'masajeador_timer';
+let countdown = localStorage.getItem(TIMER_KEY);
+if(!countdown) { countdown = 30*60; localStorage.setItem(TIMER_KEY, countdown); }
+const timerEl = document.getElementById('timer');
+
+setInterval(() => {
+    countdown--;
+    if(countdown <=0){
+        timerEl.innerText = "¡Oferta finalizada!";
+        localStorage.removeItem(TIMER_KEY);
+        return;
+    }
+    localStorage.setItem(TIMER_KEY, countdown);
+    let minutes = Math.floor(countdown/60).toString().padStart(2,'0');
+    let seconds = (countdown%60).toString().padStart(2,'0');
+    timerEl.innerText = `Oferta termina en: 00:${minutes}:${seconds}`;
+}, 1000);
+
+// Stock dinámico con persistencia
+const STOCK_KEY = 'masajeador_stock';
+let stock = localStorage.getItem(STOCK_KEY);
+if(!stock){ stock=25; localStorage.setItem(STOCK_KEY, stock); }
+const stockEl = document.getElementById('stock');
+setInterval(() => {
+    if(stock>1){ stock--; stockEl.innerText = stock; localStorage.setItem(STOCK_KEY, stock); }
+}, 90000); // cada 1.5 min
+</script>
+
+</body>
+</html>
