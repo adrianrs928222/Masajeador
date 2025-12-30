@@ -7,7 +7,7 @@ const PDFDocument = require("pdfkit");
 const nodemailer = require("nodemailer");
 const Stripe = require("stripe");
 
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY); // Stripe secret key
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const EMAIL_USER = process.env.SMTP_USER;
 const EMAIL_PASS = process.env.SMTP_PASS;
 const TIENDA_NOMBRE = "Masajeador de Ojos Portátil";
@@ -15,8 +15,9 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 app.use(bodyParser.json());
+app.use(express.static("public"));
 
-// ===== Base de datos =====
+// Base de datos
 const db = new sqlite3.Database("./pedidos.db");
 db.run(`CREATE TABLE IF NOT EXISTS pedidos (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,13 +31,13 @@ db.run(`CREATE TABLE IF NOT EXISTS pedidos (
   fecha TEXT
 )`);
 
-// ===== Nodemailer =====
+// Nodemailer
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: { user: EMAIL_USER, pass: EMAIL_PASS }
 });
 
-// ===== Obtener stock actual =====
+// Stock dinámico
 app.get("/stock", (req, res) => {
   db.get("SELECT SUM(cantidad) as total FROM pedidos", (err, row) => {
     const stockInicial = 20;
@@ -45,13 +46,11 @@ app.get("/stock", (req, res) => {
   });
 });
 
-// ===== Crear pedido =====
+// Crear pedido
 app.post("/pedido", async (req, res) => {
   const { nombre, email, telefono, direccion, cantidad, token } = req.body;
   const producto = TIENDA_NOMBRE;
-
   try {
-    // Cobro Stripe
     const charge = await stripe.paymentIntents.create({
       amount: cantidad * 4990,
       currency: "eur",
@@ -80,11 +79,11 @@ app.post("/pedido", async (req, res) => {
     doc.text(`Producto: ${producto}`);
     doc.text(`Cantidad: ${cantidad}`);
     doc.text(`Precio unitario: 49,90€`);
-    doc.text(`Total: ${(cantidad * 49.9).toFixed(2)}€`);
+    doc.text(`Total: ${(cantidad*49.9).toFixed(2)}€`);
     doc.text(`Fecha: ${fecha}`);
     doc.end();
 
-    // Enviar email al cliente
+    // Email al cliente
     await transporter.sendMail({
       from: `"${TIENDA_NOMBRE}" <${EMAIL_USER}>`,
       to: email,
@@ -93,9 +92,7 @@ app.post("/pedido", async (req, res) => {
       attachments: [{ filename: fileName, path: fileName }]
     });
 
-    const proveedorLink = `https://tu-proveedor.com/pedido?nombre=${encodeURIComponent(nombre)}&direccion=${encodeURIComponent(direccion)}&producto=${encodeURIComponent(producto)}&cantidad=${cantidad}`;
-
-    res.json({ success: true, message: "Pedido recibido correctamente", proveedorLink });
+    res.json({ success: true, message: "Pedido recibido correctamente" });
 
   } catch (error) {
     console.error(error);
@@ -103,25 +100,4 @@ app.post("/pedido", async (req, res) => {
   }
 });
 
-// Actualizar tracking
-app.post("/tracking", (req, res) => {
-  const { pedidoId, tracking } = req.body;
-  db.run(`UPDATE pedidos SET tracking=? WHERE id=?`, [tracking, pedidoId], (err) => {
-    if (err) return res.status(500).json({ success: false, message: "Error actualizando tracking" });
-
-    db.get(`SELECT email FROM pedidos WHERE id=?`, [pedidoId], (err, row) => {
-      if (row) {
-        transporter.sendMail({
-          from: `"${TIENDA_NOMBRE}" <${EMAIL_USER}>`,
-          to: row.email,
-          subject: "Tu pedido está en camino",
-          text: `Tu pedido ha sido enviado. Número de seguimiento: ${tracking}`
-        });
-      }
-    });
-
-    res.json({ success: true, message: "Tracking actualizado y enviado al cliente" });
-  });
-});
-
-app.listen(PORT, () => console.log(`Backend corriendo en http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
