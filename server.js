@@ -8,13 +8,11 @@ const nodemailer = require("nodemailer");
 const Stripe = require("stripe");
 
 // ======== CONFIGURACIÓN ========
-const stripe = Stripe("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");
-
-const EMAIL_USER = "masajeadordeojos068@gmail.com"; // tu email
-const EMAIL_PASS = "TU_CONTRASEÑA_DE_APP";           // contraseña de aplicación Gmail
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY); // Stripe secret key desde variable de entorno
+const EMAIL_USER = process.env.SMTP_USER;             // Email desde variable de entorno
+const EMAIL_PASS = process.env.SMTP_PASS;             // Contraseña app Gmail desde variable de entorno
 const TIENDA_NOMBRE = "Masajeador de Ojos Portátil";
-
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // ======== APP ========
 const app = express();
@@ -53,7 +51,7 @@ app.post("/pedido", async (req, res) => {
   try {
     // ======== COBRO STRIPE ========
     const charge = await stripe.paymentIntents.create({
-      amount: cantidad * 4990, // Precio en centavos (49,90€ por unidad)
+      amount: cantidad * 4990, // Precio en centavos
       currency: "eur",
       payment_method: token,
       confirm: true,
